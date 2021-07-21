@@ -3,6 +3,18 @@ import View=Laya.View;
 import Dialog=Laya.Dialog;
 import Scene=Laya.Scene;
 export module ui.test {
+    export class AstarUI extends Laya.View {
+		public container:Laya.Box;
+		public starBtn:Laya.Button;
+		public endBtn:Laya.Button;
+		public searchBtn:Laya.Button;
+        public static  uiView:any ={"type":"View","props":{"width":1136,"height":640},"compId":2,"child":[{"type":"Box","props":{"var":"container","top":0,"right":0,"left":0,"bottom":0},"compId":4},{"type":"Button","props":{"y":70,"x":350,"var":"starBtn","skin":"comp/button.png","label":"start"},"compId":6},{"type":"Button","props":{"y":70,"x":482,"var":"endBtn","skin":"comp/button.png","label":"endBtn"},"compId":7},{"type":"Button","props":{"y":70,"x":603,"var":"searchBtn","skin":"comp/button.png","label":"search"},"compId":8}],"loadList":["comp/button.png"],"loadList3D":[]};
+        constructor(){ super()}
+        createChildren():void {
+            super.createChildren();
+            this.createView(AstarUI.uiView);
+        }
+    }
     export class TestSceneUI extends Laya.Scene {
 		public scoreLbl:Laya.Label;
 		public tipLbll:Laya.Label;

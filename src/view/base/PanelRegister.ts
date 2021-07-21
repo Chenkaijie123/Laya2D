@@ -1,6 +1,7 @@
 import RedTipTest from "../../redTip/RedTipTest";
 import IView from "./IView";
 import View1, { View2 } from "../View1";
+import AstarTest from "../../battle/map/test/AstarTest";
 let id: number = 1;
 const map: { [key: number]: [new () => IView, string[], string[], panelLayer] } = {};
 const panelInstanceMap: { [id: number]: IView } = {};
@@ -44,5 +45,6 @@ export enum panelLayer {
 export enum PanelRegister {
     PANEL1 = registerPanel(RedTipTest, panelLayer.base, ["res/atlas/comp.atlas"]),
     PANEL2 = registerPanel(View1,panelLayer.base,["res/atlas/test.atlas"]),
-    PANEL3 = registerPanel(View2,panelLayer.base)
+    PANEL3 = registerPanel(View2,panelLayer.base),
+    PANEL4 = registerPanel(AstarTest,panelLayer.base,["res/atlas/comp.atlas"])
 }

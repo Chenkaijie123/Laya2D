@@ -5,6 +5,8 @@ import ResourceMgr from "./ResourceMgr";
 import { ui } from "./ui/layaMaxUI";
 import { PanelRegister } from "./view/base/PanelRegister";
 import ViewMgr from "./view/base/ViewMgr";
+import MapScene from "./battle/map/view/MapScene";
+import App from "./App";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -33,18 +35,17 @@ class Main {
 		this.onConfigLoaded();
 		ResourceMgr.ins.startCheck();
 	}
-
+	static app:App;
 	onConfigLoaded(): void {
 		//加载IDE指定的场景
 		// GameConfig.startScene && Laya.Scene.open(GameConfig.startScene,true,null,Laya.Handler.create(this,this.openScene));
-		ViewMgr.ins;
-		this.createBtn(
-		["btn1",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL1)}],
-		["btn2",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL2)}],
-		["btn3",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL3)}]
-		);
-
-		new RedTipMgr;
+		// this.createBtn(
+		// ["btn1",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL1)}],
+		// ["btn2",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL2)}],
+		// ["btn3",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL3)}]
+		// );
+		Main.app = new App;
+		
 	}
 
 	createBtn(...btns:[string,Function][]):void{
