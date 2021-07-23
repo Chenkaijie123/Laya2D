@@ -14,6 +14,6 @@ export default class App{
         Laya.stage.addChild(this.mapScene = new MapScene);
         this.viewMgr = ViewMgr.ins;
         this.redTipMgr = new RedTipMgr;
-        ViewMgr.ins.openPanel(PanelRegister.PANEL4)
+        ViewMgr.ins.openPanel(PanelRegister.PANEL4);
     }
 }
