@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    // "lib": ["ES2015"],
+    // "lib": ["ES2015.Promise"],
     "module": "commonjs",
     "target": "es6",
     "noEmitHelpers": true,

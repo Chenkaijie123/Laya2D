@@ -39,12 +39,12 @@ class Main {
 	onConfigLoaded(): void {
 		//加载IDE指定的场景
 		// GameConfig.startScene && Laya.Scene.open(GameConfig.startScene,true,null,Laya.Handler.create(this,this.openScene));
-		// this.createBtn(
-		// ["btn1",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL1)}],
-		// ["btn2",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL2)}],
-		// ["btn3",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL3)}]
-		// );
 		Main.app = new App;
+		this.createBtn(
+		["btn1",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL1)}],
+		["btn2",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL2)}],
+		["btn3",()=>{ViewMgr.ins.openPanel(PanelRegister.PANEL3)}]
+		);
 		
 	}
 

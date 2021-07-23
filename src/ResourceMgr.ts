@@ -2,9 +2,14 @@ import ViewMgr from "./view/base/ViewMgr";
 
 export default class ResourceMgr {
     clearAtlasQueue: string[] = [];
-    clearQueue: Laya.Texture[] = []
+    clearQueue: Laya.Texture[] = [];
+    clearMovieQueue: string[] = [];
     //大图集引用计数
-    atlasMap: { [key: string]: number } = {}
+    atlasMap: { [key: string]: number } = {};
+
+    private _movieMap: { [key: string]: { [key: string]: Laya.Texture } } = {};
+    private _movieJsonMap: { [key: string]: any } = {};
+    private _movieRefrenceMap: { [key: string]: number } = {};
     //每帧销毁资源最大数量
     static readonly frameClearCount: number = 2;
     static readonly checkClearTime: number = 1000;
@@ -40,6 +45,7 @@ export default class ResourceMgr {
                 }
             }
         }
+        this.addMovieToClearQueue();
     }
 
     /**
@@ -63,6 +69,8 @@ export default class ResourceMgr {
         }
         //清理一个大图集
         this.clearOneAtlas();
+        //清理一个movie
+        this.clearMovieRes();
     }
 
     //---------------------------------图集---------------------------
@@ -118,6 +126,77 @@ export default class ResourceMgr {
             Laya.Loader.clearRes(texture.url);
             let resource = Laya.Resource.getResourceByID(texture["id"]);
             resource && resource.destroy();
+        }
+    }
+
+    //-----------------------movie-------------------------
+    async getMovieResource(path: string) {
+        if (!this._movieMap[path]) {
+            await new Promise((resolve, reject) => {
+                let imgPath = path.replace(".json", ".png")
+                Laya.loader.load([path, imgPath], Laya.Handler.create(this, () => {
+                    let texture: Laya.Texture = Laya.Loader.getRes(imgPath);
+                    let json: any = Laya.loader.getRes(path);
+                    if (!texture || !json) reject();
+                    let res: { [key: string]: Laya.Texture } = {};
+                    let cfg: any;
+                    //防止被资源管理当散图清掉
+                    texture.width++;
+
+                    for (let k in json.res) {
+                        cfg = json.res[k];
+                        res[k] = Laya.Texture.create(texture, cfg.x, cfg.y, cfg.w, cfg.h);
+                    }
+                    this._movieMap[path] = res;
+                    this._movieJsonMap[path] = json;
+                    resolve();
+                }));
+            });
+        }
+        return Promise.resolve(this._movieMap[path]);
+    }
+
+    getMovieJson(path:string):any{
+        return this._movieJsonMap[path];
+    }
+
+    addMovieRefrence(path: string): void {
+        this._movieRefrenceMap[path] = this._movieRefrenceMap[path] ? this._movieRefrenceMap[path] + 1 : 1;
+    }
+
+    removeMovieRefrence(path: string): void {
+        if (!this._movieRefrenceMap[path]) {
+            console.error("Movie资源计数错误")
+        }
+        this._movieRefrenceMap[path] = this._movieRefrenceMap[path] - 1;
+    }
+
+    clearMovieRes(): void {
+        let path: string;
+        while (path = this.clearMovieQueue.pop()) {
+            if (this._movieRefrenceMap[path]) {
+                break;
+            }
+        }
+        delete this._movieRefrenceMap[path];
+        //json
+        delete this._movieJsonMap[path];
+        Laya.Loader.clearRes(path);
+        if (this._movieMap[path]) {
+            for (let k in this._movieMap[path]) {
+                this._movieMap[path][k].destroy();
+            }
+        }
+        //image
+        Laya.loader.clearRes(path.replace(".json", ".png"));
+    }
+
+    //把引用为0的movie资源加入销毁队列
+    addMovieToClearQueue(): void {
+        for (let k in this._movieRefrenceMap) {
+            if (!this._movieRefrenceMap[k]) {
+                this.clearMovieQueue.indexOf(k) == -1 && this.clearMovieQueue.unshift(k);
+            }
         }
     }
 
