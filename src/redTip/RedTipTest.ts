@@ -54,7 +54,7 @@ export class red1 extends RedTipBase{
     }
     A1(){
         let a = 0;
-        for(let i = 0;i < 10000;i++){
+        for(let i = 0;i < 100000;i++){
             a++;
         }
         return Math.random() > 0.5;
@@ -62,7 +62,7 @@ export class red1 extends RedTipBase{
 
     A2(){
         let a = 0;
-        for(let i = 0;i < 10000;i++){
+        for(let i = 0;i < 100000;i++){
             a++;
         }
         return Math.random() > 0.5;
@@ -70,7 +70,7 @@ export class red1 extends RedTipBase{
 
     A3(){
         let a = 0;
-        for(let i = 0;i < 10000;i++){
+        for(let i = 0;i < 100000;i++){
             a++;
         }
         return Math.random() > 0.5;
@@ -85,6 +85,8 @@ export class red2 extends RedTipBase{
     init(){
         this.register("B1",this.B1,this)("UPDATE_LV",TestMDl.ins)
         this.register("B2",this.B2,this)("UPDATE_INFO",TestMDl.ins)
+
+        // this.takecare(red1.ins).bindName("B1").care("A1")
     }
     B1(){
         let a = 0;

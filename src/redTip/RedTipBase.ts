@@ -51,6 +51,10 @@ export default class RedTipBase extends Laya.EventDispatcher {
         return this.bindHandle.bind(this,name);
     }
 
+    debugCheck():void{
+        
+    }
+
 
     /**
      * 绑定关心节点
@@ -77,6 +81,7 @@ export default class RedTipBase extends Laya.EventDispatcher {
         for (let f of flags) {
             this.temp.on(f, this, this.childrenChange, [this.tempTarget]);
         }
+        let strArr:string[]
         for (let k of this.tempTarget) {
             let ls = this.careMap.get(k);
             if (ls) {
@@ -84,7 +89,9 @@ export default class RedTipBase extends Laya.EventDispatcher {
                     return v[0] == this.temp;
                 })
                 if (target) {
-                    target[1] = ArrayUtils.unique(target[1].concat(flags))
+                    strArr = ArrayUtils.unique(target[1].concat(flags));
+                    target[1].length = 0;
+                    target[1].push(...strArr);
                 } else {
                     ls.push([this.temp, flags]);
                 }
@@ -185,7 +192,6 @@ export default class RedTipBase extends Laya.EventDispatcher {
 
     /**重新计算 */
     private calculate(flag: string): boolean {
-
         if (this.registerMap.has(flag)) {
             let [fn, caller] = this.registerMap.get(flag);
             let res = fn.call(caller);

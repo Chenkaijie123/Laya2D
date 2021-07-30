@@ -1,4 +1,4 @@
-import MovieMgr from "./Movie/MovieMgr";
+
 
 export default class View1 extends Laya.View{
     constructor(){

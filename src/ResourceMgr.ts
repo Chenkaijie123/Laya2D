@@ -1,5 +1,9 @@
 import ViewMgr from "./view/base/ViewMgr";
 
+/**
+ * 散图完全计数管理
+ * 图集和序列帧动画中间架构一层大资源计数管理
+ */
 export default class ResourceMgr {
     clearAtlasQueue: string[] = [];
     clearQueue: Laya.Texture[] = [];
@@ -142,7 +146,7 @@ export default class ResourceMgr {
                     let cfg: any;
                     //防止被资源管理当散图清掉
                     texture.width++;
-
+      
                     for (let k in json.res) {
                         cfg = json.res[k];
                         res[k] = Laya.Texture.create(texture, cfg.x, cfg.y, cfg.w, cfg.h);
@@ -156,7 +160,7 @@ export default class ResourceMgr {
         return Promise.resolve(this._movieMap[path]);
     }
 
-    getMovieJson(path:string):any{
+    getMovieJson(path: string): any {
         return this._movieJsonMap[path];
     }
 
@@ -178,6 +182,7 @@ export default class ResourceMgr {
                 break;
             }
         }
+        if (!path) return;
         delete this._movieRefrenceMap[path];
         //json
         delete this._movieJsonMap[path];
